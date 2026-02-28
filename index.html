@@ -281,24 +281,32 @@ h3:nth-of-type(4)
 
 /* 🔥 TOMBOL KELUAR CYBER NEON */
 #btnKeluar {
-    position: absolute;
-    top: 18px;
-    right: 10px;
-    padding:10px 25px;
-    background: linear-gradient(135deg,#FF6A00,#FFD700);
-    color: #fff;
+    position: fixed;       /* tetap di layar */
+    bottom: 20px;          /* jarak dari bawah layar */
+    left: 50%;             /* posisi tengah horizontal */
+    transform: translateX(-50%);
+    z-index: 9999;         /* pastikan di atas elemen lain */
+    padding: 10px 25px;
     font-weight: 900;
     font-size: 14px;
     border-radius: 5px;
-    text-decoration: none;
+    background: linear-gradient(135deg,#FF6A00,#FFD700);
+    color: #fff;
     text-transform: uppercase;
-    box-shadow:
-        0 0 10px #FF6A00,
-        0 0 20px #FFD700,
-        0 0 30px rgba(255,215,0,0.6);
-    z-index: 999;
-    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 0 10px #FF6A00, 0 0 20px #FFD700, 0 0 30px rgba(255,215,0,0.6);
     transition: all 0.3s ease;
+}
+
+#btnKeluar:hover {
+    box-shadow: 0 0 15px #FF6A00, 0 0 35px #FFD700, 0 0 60px rgba(255,215,0,0.8);
+    transform: translateX(-50%) translateY(-2px) scale(1.05);
+}
+
+}
+
+#btnKeluar:active {
+    transform: translateX(-50%) scale(0.97);
 }
 
 /* Neon Sweep Light Animation */
@@ -331,6 +339,48 @@ h3:nth-of-type(4)
 #btnKeluar:active {
     transform: scale(0.97);
 }
+
+/* ===== ATUR BODY DAN TOMBOL KELUAR ===== */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: flex-start; /* konten utama naik */
+    align-items: center;
+    padding: 20px 20px 100px 20px; /* ruang bawah untuk tombol keluar */
+}
+
+/* Tombol keluar selalu di bawah tengah */
+#btnKeluar {
+    position: fixed; /* tetap di bawah layar */
+    bottom: 20px;    /* jarak dari bawah layar */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+
+    /* Tetap pertahankan efek lama */
+    top: auto;
+    right: auto;
+}
+
+/* Tambahan untuk tampilan mobile */
+@media (max-width: 768px) {
+    #btnKeluar {
+        bottom: 15px;
+        font-size: 13px;
+        padding: 8px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    #btnKeluar {
+        bottom: 10px;
+        font-size: 12px;
+        padding: 7px 18px;
+    }
+}
+
+
 
 </style>
 </head>

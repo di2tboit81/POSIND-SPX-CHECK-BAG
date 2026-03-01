@@ -883,14 +883,12 @@ function shakeScreen(){
 }
 
 function keluarAplikasi(){
-    // Buka web lain
-    window.open("https://di2tboit81.github.io/POSIND/", "_blank");
+    document.body.style.opacity = "0";
+    document.body.style.transition = "0.5s";
 
-    // Tutup aplikasi (akan berhasil jika dibuka dari tab lain)
-    window.close();
-
-    // Fallback jika tidak bisa close
-    window.location.href = "https://di2tboit81.github.io/POSIND/";
+    setTimeout(function(){
+        window.location.href = "https://di2tboit81.github.io/POSIND/";
+    }, 500);
 }
 
 </script>

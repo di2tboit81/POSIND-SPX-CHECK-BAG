@@ -534,7 +534,7 @@ h3:nth-of-type(4)
 <!-- TOTAL & LIST -->
 <div id="sectionTotal">
     <p style="font-size:40px; font-weight:bold;">Total Kantong:<br>
-    <span id="totalData">0</span></p>
+    <span id="totalData">0</span></p></div>
 	<p id="status"></p>
 </div>
 
@@ -567,7 +567,7 @@ var firebaseConfig = {
     projectId: "db-inbound",
     storageBucket: "db-inbound.firebasestorage.app",
     messagingSenderId: "231875242890",
-    appId: "1:231875242890:web:a4d17a047845b89c9ab673"
+    appId: "1:231875242890:web:74348902968a45839ab673"
 };
 
 var beepSuccess = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
@@ -609,11 +609,14 @@ function loginPetugas(){
     var user = document.getElementById("usernamePetugas").value.trim();
     var pass = document.getElementById("passwordPetugas").value.trim();
 
-    if(
-        (user==="Win 1" && pass==="29400") ||
-        (user==="Win 2" && pass==="29400") 
-    ){
-        sessionStorage.setItem("role","petugas"); // samakan huruf kecil
+    if(user==="Win 1" && pass==="29400"){
+        sessionStorage.setItem("role","petugas");
+        sessionStorage.setItem("mode","normal"); // 🔥 mode normal (hapus data)
+        tampilkanHalaman("petugas");
+    } 
+    else if(user==="Win 2" && pass==="29400"){
+        sessionStorage.setItem("role","petugas");
+        sessionStorage.setItem("mode","readonly"); // 🔥 mode khusus win 2
         tampilkanHalaman("petugas");
     } 
     else {
@@ -623,61 +626,73 @@ function loginPetugas(){
 
 // ===== TAMPILKAN HALAMAN BERDASARKAN ROLE =====
 function tampilkanHalaman(role){
+
     document.getElementById("tombolKeluar").style.display = "none";
-    document.getElementById("loginTabSection").style.display="none";
+    document.getElementById("loginTabSection").style.display = "none";
+
     var ui = document.getElementById("userInfo");
-    ui.style.display="block";
+    ui.style.display = "block";
     document.getElementById("namaUser").innerText = role.toUpperCase();
 
+    // Reset semua class & tampilan
     ui.classList.remove("admin","petugas","user");
     document.getElementById("hapusSemuaBtn").style.display = "none";
     document.getElementById("formAdmin").style.display = "none";
     document.getElementById("formPetugas").style.display = "none";
 
-    if(role==="admin"){
-        ui.classList.add("admin");
-        document.getElementById("hapusSemuaBtn").style.display="inline-block";
-        document.getElementById("formAdmin").style.display="block";
-    }
-    if(role==="petugas"){
-        ui.classList.add("petugas");
-        document.getElementById("formPetugas").style.display="block";
-    }
-    if(role==="user"){
-        ui.classList.add("user");
-    }
-
-    // Tampilkan semua elemen setelah login
-    document.getElementById("totalData").style.display="block";
-    document.getElementById("filterKantong").style.display="block";
-    document.getElementById("reader").style.display="block";
-    document.querySelector("table").style.display="table";
-    document.querySelectorAll("h3")[1].style.display="block";
-    document.querySelectorAll("h3")[2].style.display="block";
-    document.querySelectorAll("h3")[3].style.display="block";
-	document.getElementById("sectionTotal").style.display = "block";
+    document.getElementById("sectionTotal").style.display = "block";
     document.getElementById("sectionFilter").style.display = "block";
-	
-	// Tampilkan elemen umum
-document.getElementById("sectionTotal").style.display = "block";
-document.getElementById("sectionFilter").style.display = "block";
-document.getElementById("totalData").style.display="block";
-document.getElementById("filterKantong").style.display="block";
-document.querySelector("table").style.display="table";
+    document.getElementById("totalData").style.display = "block";
+    document.getElementById("filterKantong").style.display = "block";
+    document.querySelector("table").style.display = "table";
 
-// Default sembunyikan scan
-document.getElementById("reader").style.display="none";
-document.getElementById("status").style.display="none";
-document.querySelectorAll("h3")[2].style.display="none"; // Judul Scan Kantong
+    document.getElementById("reader").style.display = "none";
+    document.getElementById("status").style.display = "none";
+    document.querySelectorAll("h3")[2].style.display = "none"; // Judul Scan
 
-// Scan hanya untuk PETUGAS dan USER
-if(role==="petugas" || role==="user"){
-    document.getElementById("reader").style.display="block";
-    document.getElementById("status").style.display="block";
-    document.querySelectorAll("h3")[2].style.display="block";
+    // ===== ROLE SETTING =====
+    if(role === "admin"){
+        ui.classList.add("admin");
+        document.getElementById("hapusSemuaBtn").style.display = "inline-block";
+        document.getElementById("formAdmin").style.display = "block";
+    }
+
+    if(role === "petugas"){
+        ui.classList.add("petugas");
+        document.getElementById("formPetugas").style.display = "block";
+
+        // Scan aktif untuk petugas
+        document.getElementById("reader").style.display = "block";
+        document.getElementById("status").style.display = "block";
+        document.querySelectorAll("h3")[2].style.display = "block";
+    }
+
+    if(role === "user"){
+        ui.classList.add("user");
+
+        // Scan aktif untuk user
+        document.getElementById("reader").style.display = "block";
+        document.getElementById("status").style.display = "block";
+        document.querySelectorAll("h3")[2].style.display = "block";
+    }
+
+    // ===== MODE KHUSUS WIN 2 (READONLY) =====
+    if(role === "petugas" && sessionStorage.getItem("mode") === "readonly"){
+
+        // 🔥 SEMBUNYIKAN TOTAL KANTONG
+        document.getElementById("sectionTotal").style.display = "none";
+        document.getElementById("totalData").style.display = "none";
+
+        // 🔥 SEMBUNYIKAN TABEL & DAFTAR
+        document.querySelector("table").style.display = "none";
+        document.querySelector("h3:nth-of-type(4)").style.display = "none";
+
+        // 🔥 SEMBUNYIKAN FILTER
+        document.getElementById("filterKantong").style.display = "none";
+        document.querySelector("h3:nth-of-type(3)").style.display = "none";
+
+    }
 }
-}
-
 // Sembunyikan tombol keluar setelah login
 document.getElementById("tombolKeluar").style.display = "none";
 
@@ -706,6 +721,30 @@ function uploadKantongAdmin(){
     document.getElementById("inputKategoriAdmin").value="";
 }
 
+function ambilStatus(item){
+
+    var mode = sessionStorage.getItem("mode");
+
+    // Jika format baru (object dari upload Excel)
+    if(typeof item === "object" && item !== null){
+
+        if(mode === "readonly"){
+            return item.status_win2 
+                ? item.status_win2 
+                : "-";
+        } else {
+            return item.status 
+                ? item.status 
+                : "OK KANTONG DI TERIMA";
+        }
+
+    } 
+    else {
+        // Jika data lama (boolean true)
+        return "OK KANTONG DI TERIMA";
+    }
+}
+
 // ===== PETUGAS FUNCTIONS =====
 function manualCheckPetugas(){
 
@@ -717,24 +756,69 @@ function manualCheckPetugas(){
         return;
     }
 
-    if(judulDipilih === "all"){
-        alert("Pilih judul dulu sebelum proses!");
-        return;
-    }
+   var mode = sessionStorage.getItem("mode");
 
-    db.child(judulDipilih).child(kode).once("value", snap=>{
+// Jika Win 2 dan masih ALL → cari ke semua judul
+if(judulDipilih === "all" && mode === "readonly"){
 
+    db.once("value", snap=>{
         var data = snap.val();
+        var ditemukan = false;
 
         if(data){
+            for(var judul in data){
+                if(data[judul][kode]){
+    ditemukan = true;
 
-            var statusText = typeof data === "object" ? data.status : "OK KANTONG DI TERIMA";
+    var item = data[judul][kode];
+    var mode = sessionStorage.getItem("mode");
+    var statusText;
 
-            // 🔥 HAPUS DATA SUPAYA TOTAL BERKURANG
+    if(mode === "readonly"){
+        statusText = item.status_win2 ? item.status_win2 : "-";
+    } else {
+        statusText = item.status ? item.status : "OK KANTONG DI TERIMA";
+    }
+
+    tampilkanStatusScan(kode, statusText);
+    beepSuccess.play();
+    return;
+}
+            }
+        }
+
+        if(!ditemukan){
+            beepError.play();
+            shakeScreen();
+            tampilkanStatusScan(kode, "TIDAK ADA");
+        }
+    });
+
+    document.getElementById("manualScanPetugas").value="";
+    return;
+}
+
+// Selain Win 2 tetap wajib pilih judul
+if(judulDipilih === "all"){
+    alert("Pilih judul dulu sebelum proses!");
+    return;
+}
+
+   db.child(judulDipilih).child(kode).once("value", snap=>{
+
+    var item = snap.val();
+
+    if(item){
+
+        var statusText = ambilStatus(item);
+        var mode = sessionStorage.getItem("mode");
+
+        if(mode !== "readonly"){
             db.child(judulDipilih).child(kode).remove();
+        }
 
-            tampilkanStatusScan(kode, statusText);
-            beepSuccess.play();
+        tampilkanStatusScan(kode, statusText);
+        beepSuccess.play();
 
         } else {
 
@@ -746,31 +830,75 @@ function manualCheckPetugas(){
 
     document.getElementById("manualScanPetugas").value="";
 }
+
 // ===== SCAN QR =====
 function onScanSuccess(decodedText){
 
     var judulDipilih = document.getElementById("filterKantong").value;
 
-    if(judulDipilih === "all"){
-        alert("Pilih judul dulu sebelum scan!");
-        return;
+    var mode = sessionStorage.getItem("mode");
+
+// Jika Win 2 dan masih ALL → cari ke semua judul
+if(judulDipilih === "all" && mode === "readonly"){
+
+    db.once("value", snap=>{
+        var data = snap.val();
+        var ditemukan = false;
+
+        if(data){
+            for(var judul in data){
+                if(data[judul][decodedText]){
+    ditemukan = true;
+
+    var item = data[judul][decodedText];
+    var mode = sessionStorage.getItem("mode");
+    var statusText;
+
+    if(mode === "readonly"){
+        statusText = item.status_win2 ? item.status_win2 : "-";
+    } else {
+        statusText = item.status ? item.status : "OK KANTONG DI TERIMA";
     }
+
+    tampilkanStatusScan(decodedText, statusText);
+    beepSuccess.play();
+    return;
+}
+            }
+        }
+
+        if(!ditemukan){
+            beepError.play();
+            shakeScreen();
+            tampilkanStatusScan(decodedText, "TIDAK ADA");
+        }
+    });
+
+    return;
+}
+
+// Selain Win 2 tetap wajib pilih judul
+if(judulDipilih === "all"){
+    alert("Pilih judul dulu sebelum scan!");
+    return;
+}
 
     db.child(judulDipilih).child(decodedText).once("value", snap=>{
 
-        var data = snap.val();
+    var item = snap.val();
 
-        if(data){
+    if(item){
 
-            var statusText = typeof data === "object" ? data.status : "OK KANTONG DI TERIMA";
+        var statusText = ambilStatus(item);
+        var mode = sessionStorage.getItem("mode");
 
-            // 🔥 HAPUS DATA AGAR TOTAL LANGSUNG BERKURANG
+        if(mode !== "readonly"){
             db.child(judulDipilih).child(decodedText).remove();
+        }
 
-            tampilkanStatusScan(decodedText, statusText);
-            beepSuccess.play();
-
-        } else {
+        tampilkanStatusScan(decodedText, statusText);
+        beepSuccess.play();
+}   else {
 
 
             beepError.play();
@@ -994,15 +1122,20 @@ function uploadExcelAdmin(){
 
     var kode = r[0];
     var keterangan = r[1];
+    var keteranganWin2 = r[2]; // 🔥 ambil kolom ke 3
 
     if(kode){
         db.child(judul)
           .child(String(kode).trim())
           .set({
-              status: keterangan 
-                      ? String(keterangan).trim().toUpperCase() 
-                      : "OK KANTONG DI TERIMA"
-          });
+    status: keterangan 
+            ? String(keterangan).trim().toUpperCase() 
+            : "OK KANTONG DI TERIMA",
+
+    status_win2: keteranganWin2 
+            ? String(keteranganWin2).trim().toUpperCase() 
+            : "-"
+});
         count++;
     }
 });
@@ -1015,9 +1148,14 @@ function uploadExcelAdmin(){
 
 function tampilkanStatusScan(kode, statusText){
 
+var mode = sessionStorage.getItem("mode");
+var isWin2 = (mode === "readonly");
+
     var htmlOutput = "<div style='margin-top:15px;'>";
 
-    htmlOutput += "<div style='font-weight:700;font-size:18px;margin-bottom:10px;'>NO KANTONG: " 
+    htmlOutput += "<div style='font-weight:900;font-size:" + 
+              (isWin2 ? "35px" : "18px") + 
+              ";margin-bottom:15px;'>"  
                   + kode + "</div>";
 
     if(statusText === "OK KANTONG DI TERIMA"){

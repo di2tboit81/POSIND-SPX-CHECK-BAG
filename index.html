@@ -725,24 +725,22 @@ function ambilStatus(item){
 
     var mode = sessionStorage.getItem("mode");
 
-    // Jika format baru (object dari upload Excel)
-    if(typeof item === "object" && item !== null){
-
-        if(mode === "readonly"){
-            return item.status_win2 
-                ? item.status_win2 
-                : "-";
-        } else {
-            return item.status 
-                ? item.status 
-                : "OK KANTONG DI TERIMA";
-        }
-
-    } 
-    else {
-        // Jika data lama (boolean true)
+    // Jika data lama (boolean true)
+    if(typeof item !== "object" || item === null){
         return "OK KANTONG DI TERIMA";
     }
+
+    // Jika mode WIN 2
+    if(mode === "readonly"){
+        return (item.status_win2 && item.status_win2 !== "")
+            ? item.status_win2
+            : "-";
+    }
+
+    // Mode normal
+    return (item.status && item.status !== "")
+        ? item.status
+        : "OK KANTONG DI TERIMA";
 }
 
 // ===== PETUGAS FUNCTIONS =====
@@ -767,10 +765,10 @@ if(judulDipilih === "all" && mode === "readonly"){
 
         if(data){
             for(var judul in data){
-                if(data[judul][kode]){
+                if(data[judul] && data[judul][String(kode).trim()]){
     ditemukan = true;
 
-    var item = data[judul][kode];
+    var item = data[judul][String(kode).trim()];
     var mode = sessionStorage.getItem("mode");
     var statusText;
 
@@ -847,7 +845,7 @@ if(judulDipilih === "all" && mode === "readonly"){
 
         if(data){
             for(var judul in data){
-                if(data[judul][decodedText]){
+                if(data[judul] && data[judul][String(decodedText).trim()]){
     ditemukan = true;
 
     var item = data[judul][decodedText];
@@ -1118,7 +1116,7 @@ function uploadExcelAdmin(){
 
         rows.forEach((r, index)=>{
 
-    if(index < 2) return; // 🔥 skip 2 baris pertama
+    if(index < 1) return; // 🔥 skip 2 baris pertama
 
     var kode = r[0];
     var keterangan = r[1];
@@ -1126,8 +1124,12 @@ function uploadExcelAdmin(){
 
     if(kode){
         db.child(judul)
-          .child(String(kode).trim())
-          .set({
+  .child(String(kode).trim())
+  .remove()
+  .then(function(){
+      db.child(judul)
+        .child(String(kode).trim())
+        .set({
     status: keterangan 
             ? String(keterangan).trim().toUpperCase() 
             : "OK KANTONG DI TERIMA",
@@ -1135,6 +1137,7 @@ function uploadExcelAdmin(){
     status_win2: keteranganWin2 
             ? String(keteranganWin2).trim().toUpperCase() 
             : "-"
+});
 });
         count++;
     }
@@ -1182,9 +1185,16 @@ var isWin2 = (mode === "readonly");
         }, 1500);
     }
     else{
+
+    if(statusText === "TIDAK ADA"){
         htmlOutput += 
         "<span class='error'>❌ KANTONG TIDAK TERDAFTAR</span>";
     }
+    else{
+        htmlOutput += 
+        "<span class='success'>ℹ️ " + statusText + "</span>";
+    }
+}
 
     htmlOutput += "</div>";
 

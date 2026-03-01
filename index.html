@@ -366,7 +366,7 @@ h3:nth-of-type(4)
 </style>
 </head>
 <body>
-<a href="https://di2tboit81.github.io/POSIND/" target="_blank" class="neon-exit-btn">
+<a href="#" onclick="keluarAplikasi()" class="neon-exit-btn" id="tombolKeluar">
     ⚡ KELUAR ⚡
 </a>
 
@@ -534,6 +534,7 @@ function loginPetugas(){
 
 // ===== TAMPILKAN HALAMAN BERDASARKAN ROLE =====
 function tampilkanHalaman(role){
+    document.getElementById("tombolKeluar").style.display = "none";
     document.getElementById("loginTabSection").style.display="none";
     var ui = document.getElementById("userInfo");
     ui.style.display="block";
@@ -587,6 +588,10 @@ if(role==="petugas" || role==="user"){
     document.querySelectorAll("h3")[2].style.display="block";
 }
 }
+
+// Sembunyikan tombol keluar setelah login
+document.getElementById("tombolKeluar").style.display = "none";
+
 
 // ===== LOGOUT =====
 function logout(){
@@ -762,9 +767,16 @@ function hapusSemuaData(){
 
 // ===== CEK SESSION SAAT RELOAD =====
 window.onload=function(){
+
     var role=sessionStorage.getItem("role");
+
+    // Jika belum login → tampilkan tombol keluar
+    if(!role){
+        document.getElementById("tombolKeluar").style.display = "block";
+    }
+
     if(role) tampilkanHalaman(role);
-	filterList();
+    filterList();
 };
 
 // ===== ENTER UNTUK LOGIN & PROSES =====
@@ -868,6 +880,17 @@ function shakeScreen(){
     setTimeout(function(){
         document.body.classList.remove("shake");
     }, 400);
+}
+
+function keluarAplikasi(){
+    // Buka web lain
+    window.open("https://di2tboit81.github.io/POSIND/", "_blank");
+
+    // Tutup aplikasi (akan berhasil jika dibuka dari tab lain)
+    window.close();
+
+    // Fallback jika tidak bisa close
+    window.location.href = "https://di2tboit81.github.io/POSIND/";
 }
 
 </script>

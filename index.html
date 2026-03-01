@@ -574,19 +574,6 @@ var beepSuccess = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_
 var beepError = new Audio("https://actions.google.com/sounds/v1/alarms/winding_alarm_clock.ogg");
 var beepBeaCukai = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
 
-// ===== UNLOCK AUDIO UNTUK HP =====
-function unlockAudio() {
-    beepSuccess.play().then(()=>{beepSuccess.pause(); beepSuccess.currentTime=0;}).catch(()=>{});
-    beepError.play().then(()=>{beepError.pause(); beepError.currentTime=0;}).catch(()=>{});
-    beepBeaCukai.play().then(()=>{beepBeaCukai.pause(); beepBeaCukai.currentTime=0;}).catch(()=>{});
-
-    document.removeEventListener("touchstart", unlockAudio);
-    document.removeEventListener("click", unlockAudio);
-}
-
-document.addEventListener("touchstart", unlockAudio, false);
-document.addEventListener("click", unlockAudio, false);
-
 firebase.initializeApp(firebaseConfig);
 var db = firebase.database().ref("kantong");
 
@@ -746,14 +733,14 @@ function manualCheckPetugas(){
             // 🔥 HAPUS DATA SUPAYA TOTAL BERKURANG
             db.child(judulDipilih).child(kode).remove();
 
-            tampilkanStatusScan(statusText);
+            tampilkanStatusScan(kode, statusText);
             beepSuccess.play();
 
         } else {
 
             beepError.play();
             shakeScreen();
-            tampilkanStatusScan("TIDAK ADA");
+            tampilkanStatusScan(kode, "TIDAK ADA");
         }
     });
 
@@ -780,7 +767,7 @@ function onScanSuccess(decodedText){
             // 🔥 HAPUS DATA AGAR TOTAL LANGSUNG BERKURANG
             db.child(judulDipilih).child(decodedText).remove();
 
-            tampilkanStatusScan(statusText);
+            tampilkanStatusScan(decodedText, statusText);
             beepSuccess.play();
 
         } else {
@@ -788,7 +775,7 @@ function onScanSuccess(decodedText){
 
             beepError.play();
             shakeScreen();
-            tampilkanStatusScan("TIDAK ADA");
+            tampilkanStatusScan(decodedText, "TIDAK ADA");
         }
     });
 }
@@ -1026,36 +1013,44 @@ function uploadExcelAdmin(){
     reader.readAsArrayBuffer(file);
 }
 
-function tampilkanStatusScan(statusText){
+function tampilkanStatusScan(kode, statusText){
+
+    var htmlOutput = "<div style='margin-top:15px;'>";
+
+    htmlOutput += "<div style='font-weight:700;font-size:18px;margin-bottom:10px;'>NO KANTONG: " 
+                  + kode + "</div>";
 
     if(statusText === "OK KANTONG DI TERIMA"){
-        document.getElementById("status").innerHTML =
+        htmlOutput += 
         "<span class='success'>✅ OK KANTONG SUDAH DI TERIMA</span>";
     }
     else if(statusText === "ERROR KANTONG DI TOLAK BEA CUKAI"){
 
-    document.getElementById("status").innerHTML =
-    "<span id='beaCukaiWarning' style='background:linear-gradient(45deg,#ff7a00,#ff9500);color:#fff;padding:15px;border-radius:20px;font-weight:800;font-size:18px;box-shadow:0 0 20px #ff7a00,0 0 40px rgba(255,149,0,0.8);'>⚠️ KANTONG DI TOLAK BEA CUKAI️</span>";
+        htmlOutput +=
+        "<span id='beaCukaiWarning' style='background:linear-gradient(45deg,#ff7a00,#ff9500);color:#fff;padding:15px;border-radius:20px;font-weight:800;font-size:18px;box-shadow:0 0 20px #ff7a00;'>⚠️ KANTONG DI TOLAK BEA CUKAI</span>";
 
-    beepBeaCukai.play();
+        beepBeaCukai.play();
+        document.body.classList.add("brutal-shake");
+        document.body.classList.add("flash-orange");
 
-    document.body.classList.add("brutal-shake");
-    document.body.classList.add("flash-orange");
+        setTimeout(function(){
+            document.getElementById("beaCukaiWarning").classList.add("glitch-orange");
+        }, 50);
 
-    setTimeout(function(){
-        document.getElementById("beaCukaiWarning").classList.add("glitch-orange");
-    }, 50);
-
-    setTimeout(function(){
-        document.body.classList.remove("brutal-shake");
-        document.body.classList.remove("flash-orange");
-        document.getElementById("beaCukaiWarning").classList.remove("glitch-orange");
-    }, 1500);
-}
+        setTimeout(function(){
+            document.body.classList.remove("brutal-shake");
+            document.body.classList.remove("flash-orange");
+            document.getElementById("beaCukaiWarning").classList.remove("glitch-orange");
+        }, 1500);
+    }
     else{
-        document.getElementById("status").innerHTML =
+        htmlOutput += 
         "<span class='error'>❌ KANTONG TIDAK TERDAFTAR</span>";
     }
+
+    htmlOutput += "</div>";
+
+    document.getElementById("status").innerHTML = htmlOutput;
 }
 
 

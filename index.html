@@ -574,6 +574,19 @@ var beepSuccess = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_
 var beepError = new Audio("https://actions.google.com/sounds/v1/alarms/winding_alarm_clock.ogg");
 var beepBeaCukai = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
 
+// ===== UNLOCK AUDIO UNTUK HP =====
+function unlockAudio() {
+    beepSuccess.play().then(()=>{beepSuccess.pause(); beepSuccess.currentTime=0;}).catch(()=>{});
+    beepError.play().then(()=>{beepError.pause(); beepError.currentTime=0;}).catch(()=>{});
+    beepBeaCukai.play().then(()=>{beepBeaCukai.pause(); beepBeaCukai.currentTime=0;}).catch(()=>{});
+
+    document.removeEventListener("touchstart", unlockAudio);
+    document.removeEventListener("click", unlockAudio);
+}
+
+document.addEventListener("touchstart", unlockAudio, false);
+document.addEventListener("click", unlockAudio, false);
+
 firebase.initializeApp(firebaseConfig);
 var db = firebase.database().ref("kantong");
 

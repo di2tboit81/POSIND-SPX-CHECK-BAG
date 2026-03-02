@@ -652,10 +652,17 @@ function tampilkanHalaman(role){
 
     // ===== ROLE SETTING =====
     if(role === "admin"){
-        ui.classList.add("admin");
-        document.getElementById("hapusSemuaBtn").style.display = "inline-block";
-        document.getElementById("formAdmin").style.display = "block";
-    }
+    ui.classList.add("admin");
+    document.getElementById("hapusSemuaBtn").style.display = "inline-block";
+    document.getElementById("formAdmin").style.display = "block";
+
+    // 🔥 AKTIFKAN TOTAL, FILTER & TABEL
+    document.getElementById("sectionTotal").style.display = "block";
+    document.getElementById("sectionFilter").style.display = "block";
+    document.getElementById("filterKantong").disabled = false;
+
+    filterList(); // 🔥 PENTING: supaya total & tabel langsung muncul
+}
 
     if(role === "petugas"){
 

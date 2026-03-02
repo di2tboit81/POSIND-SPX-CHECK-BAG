@@ -609,14 +609,14 @@ function loginPetugas(){
     var user = document.getElementById("usernamePetugas").value.trim();
     var pass = document.getElementById("passwordPetugas").value.trim();
 
-    if(user==="Win 1" && pass==="29400"){
+    if(user==="Win1" && pass==="29400"){
         sessionStorage.setItem("role","petugas");
         sessionStorage.setItem("mode","normal"); // 🔥 mode normal (hapus data)
         tampilkanHalaman("petugas");
     } 
-    else if(user==="Win 2" && pass==="29400"){
+    else if(user==="Win2" && pass==="29400"){
         sessionStorage.setItem("role","petugas");
-        sessionStorage.setItem("mode","readonly"); // 🔥 mode khusus win 2
+        sessionStorage.setItem("mode","readonly"); // 🔥 mode khusus Win2
         tampilkanHalaman("petugas");
     } 
     else {
@@ -676,8 +676,8 @@ function tampilkanHalaman(role){
         document.querySelectorAll("h3")[2].style.display = "block";
     }
 
-    // ===== MODE KHUSUS WIN 2 (READONLY) =====
-    // ===== MODE KHUSUS WIN 2 (READONLY) =====
+    // ===== MODE KHUSUS Win2 (READONLY) =====
+    // ===== MODE KHUSUS Win2 (READONLY) =====
 if(role === "petugas" && sessionStorage.getItem("mode") === "readonly"){
 
     // 🔥 TOTAL TETAP DITAMPILKAN (hapus baris hide total)
@@ -730,7 +730,7 @@ function ambilStatus(item){
         return "OK KANTONG DI TERIMA";
     }
 
-    // Jika mode WIN 2
+    // Jika mode Win2
     if(mode === "readonly"){
         return (item.status_win2 && item.status_win2 !== "")
             ? item.status_win2
@@ -756,7 +756,7 @@ function manualCheckPetugas(){
 
    var mode = sessionStorage.getItem("mode");
 
-// Jika Win 2 dan masih ALL → cari ke semua judul
+// Jika Win2 dan masih ALL → cari ke semua judul
 if(judulDipilih === "all" && mode === "readonly"){
 
     db.once("value", snap=>{
@@ -796,7 +796,7 @@ if(judulDipilih === "all" && mode === "readonly"){
     return;
 }
 
-// Selain Win 2 tetap wajib pilih judul
+// Selain Win2 tetap wajib pilih judul
 if(judulDipilih === "all"){
     alert("Pilih judul dulu sebelum proses!");
     return;
@@ -836,7 +836,7 @@ function onScanSuccess(decodedText){
 
     var mode = sessionStorage.getItem("mode");
 
-// Jika Win 2 dan masih ALL → cari ke semua judul
+// Jika Win2 dan masih ALL → cari ke semua judul
 if(judulDipilih === "all" && mode === "readonly"){
 
     db.once("value", snap=>{
@@ -875,7 +875,7 @@ if(judulDipilih === "all" && mode === "readonly"){
     return;
 }
 
-// Selain Win 2 tetap wajib pilih judul
+// Selain Win2 tetap wajib pilih judul
 if(judulDipilih === "all"){
     alert("Pilih judul dulu sebelum scan!");
     return;

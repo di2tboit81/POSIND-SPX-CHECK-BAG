@@ -658,14 +658,23 @@ function tampilkanHalaman(role){
     }
 
     if(role === "petugas"){
-        ui.classList.add("petugas");
-        document.getElementById("formPetugas").style.display = "block";
 
-        // Scan aktif untuk petugas
-        document.getElementById("reader").style.display = "block";
-        document.getElementById("status").style.display = "block";
-        document.querySelectorAll("h3")[2].style.display = "block";
+    ui.classList.add("petugas");
+    document.getElementById("formPetugas").style.display = "block";
+
+    // Scan aktif untuk petugas
+    document.getElementById("reader").style.display = "block";
+    document.getElementById("status").style.display = "block";
+    document.querySelectorAll("h3")[2].style.display = "block";
+
+    var mode = sessionStorage.getItem("mode");
+
+    // 🔥 KHUSUS WIN2 → SEMBUNYIKAN TABEL SAJA
+    if(mode === "readonly"){
+        document.querySelector("table").style.display = "none";
+        document.querySelectorAll("h3")[4].style.display = "none";
     }
+}
 
     if(role === "user"){
         ui.classList.add("user");
@@ -678,20 +687,24 @@ function tampilkanHalaman(role){
 
     // ===== MODE KHUSUS Win2 (READONLY) =====
     // ===== MODE KHUSUS Win2 (READONLY) =====
-if(role === "petugas" && sessionStorage.getItem("mode") === "readonly"){
+// ===== MODE KHUSUS PETUGAS (WIN1 & WIN2 SAMA TAMPILAN TOTAL & JUDUL) =====
+// ===== PETUGAS (WIN1 & WIN2) =====
+if(role === "petugas"){
 
-    // 🔥 TOTAL TETAP DITAMPILKAN (hapus baris hide total)
+    var dropdown = document.getElementById("filterKantong");
 
-    // 🔥 SEMBUNYIKAN TABEL & DAFTAR
-    document.querySelector("table").style.display = "none";
-    document.querySelector("h3:nth-of-type(4)").style.display = "none";
+    setTimeout(function(){
 
-    // 🔥 SEMBUNYIKAN FILTER
-    document.getElementById("filterKantong").style.display = "none";
-    document.querySelector("h3:nth-of-type(3)").style.display = "none";
+        if(dropdown.options.length > 1){
+            dropdown.selectedIndex = 1;
+        }
 
+        dropdown.disabled = false; // ✅ dropdown tetap bisa dipilih
+
+        filterList();
+
+    }, 500);
 }
-
 }
 // Sembunyikan tombol keluar setelah login
 document.getElementById("tombolKeluar").style.display = "none";
@@ -915,16 +928,37 @@ function filterList(){
     var filter = document.getElementById("filterKantong").value;
     var list = document.getElementById("listKantong");
 
-    db.off(); // matikan listener lama
+    if(window.currentRef){
+        window.currentRef.off();
+    }
 
     list.innerHTML = "";
     document.getElementById("totalData").innerText = "0";
 
-    var total = 0;
-
     var ref = (filter === "all") ? db : db.child(filter);
+    window.currentRef = ref;
 
-    // Saat data ditambahkan
+    // ===== HITUNG TOTAL AWAL =====
+    ref.once("value", function(snapshot){
+
+        var total = 0;
+
+        if(filter === "all"){
+            snapshot.forEach(function(judulSnap){
+                judulSnap.forEach(function(child){
+                    total++;
+                });
+            });
+        } else {
+            snapshot.forEach(function(child){
+                total++;
+            });
+        }
+
+        document.getElementById("totalData").innerText = total;
+    });
+
+    // ===== REALTIME LIST =====
     ref.on("child_added", function(snap){
 
         if(filter === "all"){
@@ -937,9 +971,6 @@ function filterList(){
                 var row = document.createElement("tr");
                 row.innerHTML = "<td>"+kode+"</td><td>"+judul+"</td>";
                 list.appendChild(row);
-
-                total++;
-                document.getElementById("totalData").innerText = total;
             });
 
         } else {
@@ -949,19 +980,13 @@ function filterList(){
             var row = document.createElement("tr");
             row.innerHTML = "<td>"+kode+"</td><td>"+filter+"</td>";
             list.appendChild(row);
-
-            total++;
-            document.getElementById("totalData").innerText = total;
         }
     });
 
-    // Saat data dihapus
-    ref.on("child_removed", function(snap){
-
-        filterList(); // reload ringan
+    ref.on("child_removed", function(){
+        filterList();
     });
 
-    // Ambil dropdown judul tetap
     db.once("value", function(snap){
         loadDropdownJudul(snap.val());
     });
@@ -985,8 +1010,9 @@ window.onload=function(){
         document.getElementById("tombolKeluar").style.display = "block";
     }
 
-    if(role) tampilkanHalaman(role);
-    filterList();
+    if(role){
+        tampilkanHalaman(role);
+    }
 };
 
 // ===== ENTER UNTUK LOGIN & PROSES =====
@@ -1225,5 +1251,6 @@ var isWin2 = (mode === "readonly");
 </script>
 </body>
 </html>
+
 
 

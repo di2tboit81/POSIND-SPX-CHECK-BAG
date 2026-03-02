@@ -915,36 +915,55 @@ function filterList(){
     var filter = document.getElementById("filterKantong").value;
     var list = document.getElementById("listKantong");
 
-    db.off();
+    db.off(); // matikan listener lama
 
-    db.on("value", function(snap){
+    list.innerHTML = "";
+    document.getElementById("totalData").innerText = "0";
 
-        var data = snap.val();
-        list.innerHTML = "";
-        var total = 0;
+    var total = 0;
 
-        if(data){
+    var ref = (filter === "all") ? db : db.child(filter);
 
-            if(filter === "all"){
-                Object.keys(data).forEach(judul=>{
-                    Object.keys(data[judul]).forEach(kode=>{
-                        list.innerHTML += "<tr><td>"+kode+"</td><td>"+judul+"</td></tr>";
-                        total++;
-                    });
-                });
-            } 
-            else {
-                if(data[filter]){
-                    Object.keys(data[filter]).forEach(kode=>{
-                        list.innerHTML += "<tr><td>"+kode+"</td><td>"+filter+"</td></tr>";
-                        total++;
-                    });
-                }
-            }
+    // Saat data ditambahkan
+    ref.on("child_added", function(snap){
+
+        if(filter === "all"){
+
+            var judul = snap.key;
+
+            snap.forEach(child=>{
+                var kode = child.key;
+
+                var row = document.createElement("tr");
+                row.innerHTML = "<td>"+kode+"</td><td>"+judul+"</td>";
+                list.appendChild(row);
+
+                total++;
+                document.getElementById("totalData").innerText = total;
+            });
+
+        } else {
+
+            var kode = snap.key;
+
+            var row = document.createElement("tr");
+            row.innerHTML = "<td>"+kode+"</td><td>"+filter+"</td>";
+            list.appendChild(row);
+
+            total++;
+            document.getElementById("totalData").innerText = total;
         }
+    });
 
-        document.getElementById("totalData").innerText = total;
-        loadDropdownJudul(data);
+    // Saat data dihapus
+    ref.on("child_removed", function(snap){
+
+        filterList(); // reload ringan
+    });
+
+    // Ambil dropdown judul tetap
+    db.once("value", function(snap){
+        loadDropdownJudul(snap.val());
     });
 }
 

@@ -677,21 +677,21 @@ function tampilkanHalaman(role){
     }
 
     // ===== MODE KHUSUS WIN 2 (READONLY) =====
-    if(role === "petugas" && sessionStorage.getItem("mode") === "readonly"){
+    // ===== MODE KHUSUS WIN 2 (READONLY) =====
+if(role === "petugas" && sessionStorage.getItem("mode") === "readonly"){
 
-        // 🔥 SEMBUNYIKAN TOTAL KANTONG
-        document.getElementById("sectionTotal").style.display = "none";
-        document.getElementById("totalData").style.display = "none";
+    // 🔥 TOTAL TETAP DITAMPILKAN (hapus baris hide total)
 
-        // 🔥 SEMBUNYIKAN TABEL & DAFTAR
-        document.querySelector("table").style.display = "none";
-        document.querySelector("h3:nth-of-type(4)").style.display = "none";
+    // 🔥 SEMBUNYIKAN TABEL & DAFTAR
+    document.querySelector("table").style.display = "none";
+    document.querySelector("h3:nth-of-type(4)").style.display = "none";
 
-        // 🔥 SEMBUNYIKAN FILTER
-        document.getElementById("filterKantong").style.display = "none";
-        document.querySelector("h3:nth-of-type(3)").style.display = "none";
+    // 🔥 SEMBUNYIKAN FILTER
+    document.getElementById("filterKantong").style.display = "none";
+    document.querySelector("h3:nth-of-type(3)").style.display = "none";
 
-    }
+}
+
 }
 // Sembunyikan tombol keluar setelah login
 document.getElementById("tombolKeluar").style.display = "none";

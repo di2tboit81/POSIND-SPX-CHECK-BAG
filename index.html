@@ -90,7 +90,7 @@ body::before {
 }
 h2{font-size:24px; font-weight:700; color:#ff7a00; margin-bottom:20px; text-shadow:0 0 15px rgba(255,122,0,0.5);}
 h3{margin-top:25px; margin-bottom:10px; font-weight:600; color:#ff9500;}
-body > *{width:100%; max-width:450px; margin-bottom:15px; backdrop-filter: blur(15px); background: rgba(255,255,255,0.05); border-radius:20px; padding:15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition:0.3s;}
+body > *{width:100%; max-width:450px; margin-bottom:15px; backdrop-filter: none; background: rgba(255,255,255,0.05); border-radius:20px; padding:15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition:0.3s;}
 #totalData{font-size:80px; font-weight:700; color:#ff7a00; text-shadow:0 0 25px rgba(255,122,0,0.8);}
 input, button, select{width:90%; max-width:400px; padding:12px; margin:8px auto; border-radius:15px; border:none; font-size:15px; outline:none; display:block; text-align:center;}
 input{background: rgba(255,255,255,0.15); color:white; backdrop-filter: blur(10px); transition:0.3s;}
@@ -145,19 +145,67 @@ h3:nth-of-type(4)
 }
 
 /* ===== EFEK SHAKE ERROR ===== */
-@keyframes shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-8px); }
-  40% { transform: translateX(8px); }
-  60% { transform: translateX(-8px); }
-  80% { transform: translateX(8px); }
+/* ===== SHAKE KUAT KHUSUS ERROR BEA CUKAI ===== */
+@keyframes strongShake {
+  0% { transform: translateX(0) rotate(0); }
+  10% { transform: translateX(-15px) rotate(-3deg); }
+  20% { transform: translateX(15px) rotate(3deg); }
+  30% { transform: translateX(-15px) rotate(-3deg); }
+  40% { transform: translateX(15px) rotate(3deg); }
+  50% { transform: translateX(-10px) rotate(-2deg); }
+  60% { transform: translateX(10px) rotate(2deg); }
+  70% { transform: translateX(-8px) rotate(-1deg); }
+  80% { transform: translateX(8px) rotate(1deg); }
+  90% { transform: translateX(-4px); }
   100% { transform: translateX(0); }
 }
 
-.shake {
-  animation: shake 0.4s ease;
+.strong-shake {
+  animation: strongShake 0.7s ease;
 }
 
+/* ===== FLASH ORANGE WARNING ===== */
+@keyframes flashOrange {
+  0% { background-color: rgba(255,140,0,0); }
+  50% { background-color: rgba(255,140,0,0.6); }
+  100% { background-color: rgba(255,140,0,0); }
+}
+
+.flash-orange {
+  animation: flashOrange 0.6s ease 2;
+}
+
+/* ===== SHAKE SUPER KUAT ===== */
+@keyframes brutalShake {
+  0% { transform: translate(0,0) rotate(0); }
+  10% { transform: translate(-20px,10px) rotate(-5deg); }
+  20% { transform: translate(20px,-10px) rotate(5deg); }
+  30% { transform: translate(-25px,15px) rotate(-6deg); }
+  40% { transform: translate(25px,-15px) rotate(6deg); }
+  50% { transform: translate(-15px,10px) rotate(-4deg); }
+  60% { transform: translate(15px,-10px) rotate(4deg); }
+  70% { transform: translate(-10px,5px) rotate(-3deg); }
+  80% { transform: translate(10px,-5px) rotate(3deg); }
+  90% { transform: translate(-5px,2px); }
+  100% { transform: translate(0,0); }
+}
+
+.brutal-shake {
+  animation: brutalShake 0.8s ease;
+}
+
+/* ===== GLITCH ORANGE WARNING ===== */
+@keyframes glitchOrange {
+  0% { text-shadow: 2px 2px #ff7a00, -2px -2px #ffd700; }
+  25% { text-shadow: -2px -2px #ff9500, 2px 2px #ffaa00; }
+  50% { text-shadow: 2px -2px #ff7a00, -2px 2px #ffcc00; }
+  75% { text-shadow: -2px 2px #ff9500, 2px -2px #ffaa00; }
+  100% { text-shadow: 2px 2px #ff7a00, -2px -2px #ffd700; }
+}
+
+.glitch-orange {
+  animation: glitchOrange 0.25s infinite;
+}
 
 /* ===== STYLE DROPDOWN JUDUL LEBIH TEBAL & KEREN ===== */
 #filterKantong {
@@ -274,18 +322,139 @@ h3:nth-of-type(4)
         0 0 15px #ff7a00,
         0 0 30px #ff9500,
         0 0 60px rgba(255,122,0,0.5);
-    margin:0 auto 20px auto;
+    margin:40px auto 20px auto;
     display:block;
     transition:0.3s;
 }
 
+@keyframes sweep {
+    0% { left: -100%; }
+    100% { left: 150%; }
+}
 
+.neon-exit-btn {
+    display: inline-block;
+    margin: 20px auto;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #ff0055;
+    border: 2px solid #ff0055;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+    box-shadow: 0 0 5px #ff0055, 0 0 10px #ff0055, 0 0 20px rgba(255,0,85,0.7);
+}
+
+/* Glow pulse animation */
+@keyframes pulseExit {
+    0% { box-shadow: 0 0 5px #ff0055, 0 0 10px #ff0055; }
+    50% { box-shadow: 0 0 20px #ff0055, 0 0 40px rgba(255,0,85,0.7); }
+    100% { box-shadow: 0 0 5px #ff0055, 0 0 10px #ff0055; }
+}
+
+.neon-exit-btn {
+    animation: pulseExit 1.5s infinite;
+}
+
+.neon-exit-btn:hover {
+    background: #ff0055;
+    color: #0f1f3d;
+    transform: scale(1.1);
+}
+
+.neon-exit-btn {
+    display: inline-block;
+    margin: 30px auto 20px auto;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #ff7a00; /* Neon Orange */
+    border: 3px solid #ff7a00;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+    box-shadow: 
+        0 0 5px #ff7a00,
+        0 0 15px #ff7a00,
+        0 0 30px rgba(255,122,0,0.7),
+        0 0 50px rgba(255,122,0,0.5);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Glow pulse animation */
+@keyframes pulseExitOrange {
+    0% { box-shadow: 0 0 5px #ff7a00, 0 0 15px #ff7a00; }
+    50% { box-shadow: 0 0 20px #ff7a00, 0 0 40px rgba(255,122,0,0.7); }
+    100% { box-shadow: 0 0 5px #ff7a00, 0 0 15px #ff7a00; }
+}
+
+.neon-exit-btn {
+    animation: pulseExitOrange 1.5s infinite alternate;
+}
+
+.neon-exit-btn:hover {
+    background: #ff7a00;
+    color: #0f1f3d;
+    transform: scale(1.1);
+    box-shadow:
+        0 0 30px #ff7a00,
+        0 0 60px #ff9500,
+        0 0 100px rgba(255,122,0,0.9);
+}
+
+/* ===== SHAKE MERAH SUPER KUAT ===== */
+@keyframes megaShakeRed {
+  0% { transform: translate(0,0); }
+  10% { transform: translate(-25px,15px); }
+  20% { transform: translate(25px,-15px); }
+  30% { transform: translate(-30px,20px); }
+  40% { transform: translate(30px,-20px); }
+  50% { transform: translate(-20px,15px); }
+  60% { transform: translate(20px,-15px); }
+  70% { transform: translate(-15px,10px); }
+  80% { transform: translate(15px,-10px); }
+  90% { transform: translate(-8px,5px); }
+  100% { transform: translate(0,0); }
+}
+
+.mega-shake-red {
+  animation: megaShakeRed 0.9s ease;
+}
+
+/* ERROR MERAH TEBAL GLOW */
+.super-error {
+  background: linear-gradient(45deg,#8b0000,#ff0000);
+  color: white;
+  padding: 20px;
+  border-radius: 25px;
+  font-weight: 900;
+  font-size: 20px;
+  text-align: center;
+  box-shadow:
+    0 0 25px #ff0000,
+    0 0 60px rgba(255,0,0,0.9),
+    0 0 90px rgba(255,0,0,0.7);
+}
 
 </style>
 </head>
 <body>
-<br><br>
+<a href="#" onclick="keluarAplikasi()" class="neon-exit-btn" id="tombolKeluar">
+    ⚡ KELUAR ⚡
+</a>
+
 <img src="boit.png" class="logo-header"><br><br>
+<script>
+</script>
 <h2>APLIKASI CEK KANTONG</h2>
 
 <!-- LOGIN TAB -->
@@ -365,7 +534,7 @@ h3:nth-of-type(4)
 <!-- TOTAL & LIST -->
 <div id="sectionTotal">
     <p style="font-size:40px; font-weight:bold;">Total Kantong:<br>
-    <span id="totalData">0</span></p>
+    <span id="totalData">0</span></p></div>
 	<p id="status"></p>
 </div>
 
@@ -398,12 +567,12 @@ var firebaseConfig = {
     projectId: "db-inbound",
     storageBucket: "db-inbound.firebasestorage.app",
     messagingSenderId: "231875242890",
-    appId: "1:231875242890:web:a4d17a047845b89c9ab673"
+    appId: "1:231875242890:web:74348902968a45839ab673"
 };
 
 var beepSuccess = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
 var beepError = new Audio("https://actions.google.com/sounds/v1/alarms/winding_alarm_clock.ogg");
-
+var beepBeaCukai = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
 
 firebase.initializeApp(firebaseConfig);
 var db = firebase.database().ref("kantong");
@@ -439,67 +608,114 @@ function loginAdmin(){
 function loginPetugas(){
     var user = document.getElementById("usernamePetugas").value.trim();
     var pass = document.getElementById("passwordPetugas").value.trim();
-    if(user==="Kcu Batam" && pass==="29400"){
-        sessionStorage.setItem("role","Petugas");
+
+    if(user==="Win1" && pass==="29400"){
+        sessionStorage.setItem("role","petugas");
+        sessionStorage.setItem("mode","normal"); // 🔥 mode normal (hapus data)
         tampilkanHalaman("petugas");
-    } else alert("Username/Password Petugas salah!");
+    } 
+    else if(user==="Win2" && pass==="29400"){
+        sessionStorage.setItem("role","petugas");
+        sessionStorage.setItem("mode","readonly"); // 🔥 mode khusus Win2
+        tampilkanHalaman("petugas");
+    } 
+    else {
+        alert("Username/Password Petugas salah!");
+    }
 }
 
 // ===== TAMPILKAN HALAMAN BERDASARKAN ROLE =====
 function tampilkanHalaman(role){
-    document.getElementById("loginTabSection").style.display="none";
+
+    document.getElementById("tombolKeluar").style.display = "none";
+    document.getElementById("loginTabSection").style.display = "none";
+
     var ui = document.getElementById("userInfo");
-    ui.style.display="block";
+    ui.style.display = "block";
     document.getElementById("namaUser").innerText = role.toUpperCase();
 
+    // Reset semua class & tampilan
     ui.classList.remove("admin","petugas","user");
     document.getElementById("hapusSemuaBtn").style.display = "none";
     document.getElementById("formAdmin").style.display = "none";
     document.getElementById("formPetugas").style.display = "none";
 
-    if(role==="admin"){
-        ui.classList.add("admin");
-        document.getElementById("hapusSemuaBtn").style.display="inline-block";
-        document.getElementById("formAdmin").style.display="block";
-    }
-    if(role==="petugas"){
-        ui.classList.add("petugas");
-        document.getElementById("formPetugas").style.display="block";
-    }
-    if(role==="user"){
-        ui.classList.add("user");
-    }
-
-    // Tampilkan semua elemen setelah login
-    document.getElementById("totalData").style.display="block";
-    document.getElementById("filterKantong").style.display="block";
-    document.getElementById("reader").style.display="block";
-    document.querySelector("table").style.display="table";
-    document.querySelectorAll("h3")[1].style.display="block";
-    document.querySelectorAll("h3")[2].style.display="block";
-    document.querySelectorAll("h3")[3].style.display="block";
-	document.getElementById("sectionTotal").style.display = "block";
+    document.getElementById("sectionTotal").style.display = "block";
     document.getElementById("sectionFilter").style.display = "block";
-	
-	// Tampilkan elemen umum
-document.getElementById("sectionTotal").style.display = "block";
-document.getElementById("sectionFilter").style.display = "block";
-document.getElementById("totalData").style.display="block";
-document.getElementById("filterKantong").style.display="block";
-document.querySelector("table").style.display="table";
+    document.getElementById("totalData").style.display = "block";
+    document.getElementById("filterKantong").style.display = "block";
+    document.querySelector("table").style.display = "table";
 
-// Default sembunyikan scan
-document.getElementById("reader").style.display="none";
-document.getElementById("status").style.display="none";
-document.querySelectorAll("h3")[2].style.display="none"; // Judul Scan Kantong
+    document.getElementById("reader").style.display = "none";
+    document.getElementById("status").style.display = "none";
+    document.querySelectorAll("h3")[2].style.display = "none"; // Judul Scan
 
-// Scan hanya untuk PETUGAS dan USER
-if(role==="petugas" || role==="user"){
-    document.getElementById("reader").style.display="block";
-    document.getElementById("status").style.display="block";
-    document.querySelectorAll("h3")[2].style.display="block";
+    // ===== ROLE SETTING =====
+    if(role === "admin"){
+    ui.classList.add("admin");
+    document.getElementById("hapusSemuaBtn").style.display = "inline-block";
+    document.getElementById("formAdmin").style.display = "block";
+
+    // 🔥 AKTIFKAN TOTAL, FILTER & TABEL
+    document.getElementById("sectionTotal").style.display = "block";
+    document.getElementById("sectionFilter").style.display = "block";
+    document.getElementById("filterKantong").disabled = false;
+
+    filterList(); // 🔥 PENTING: supaya total & tabel langsung muncul
+}
+
+    if(role === "petugas"){
+
+    ui.classList.add("petugas");
+    document.getElementById("formPetugas").style.display = "block";
+
+    // Scan aktif untuk petugas
+    document.getElementById("reader").style.display = "block";
+    document.getElementById("status").style.display = "block";
+    document.querySelectorAll("h3")[2].style.display = "block";
+
+    var mode = sessionStorage.getItem("mode");
+
+    // 🔥 KHUSUS WIN2 → SEMBUNYIKAN TABEL SAJA
+    if(mode === "readonly"){
+        document.querySelector("table").style.display = "none";
+        document.querySelectorAll("h3")[4].style.display = "none";
+    }
+}
+
+    if(role === "user"){
+        ui.classList.add("user");
+
+        // Scan aktif untuk user
+        document.getElementById("reader").style.display = "block";
+        document.getElementById("status").style.display = "block";
+        document.querySelectorAll("h3")[2].style.display = "block";
+    }
+
+    // ===== MODE KHUSUS Win2 (READONLY) =====
+    // ===== MODE KHUSUS Win2 (READONLY) =====
+// ===== MODE KHUSUS PETUGAS (WIN1 & WIN2 SAMA TAMPILAN TOTAL & JUDUL) =====
+// ===== PETUGAS (WIN1 & WIN2) =====
+if(role === "petugas"){
+
+    var dropdown = document.getElementById("filterKantong");
+
+    setTimeout(function(){
+
+        if(dropdown.options.length > 1){
+            dropdown.selectedIndex = 1;
+        }
+
+        dropdown.disabled = false; // ✅ dropdown tetap bisa dipilih
+
+        filterList();
+
+    }, 500);
 }
 }
+// Sembunyikan tombol keluar setelah login
+document.getElementById("tombolKeluar").style.display = "none";
+
 
 // ===== LOGOUT =====
 function logout(){
@@ -525,52 +741,31 @@ function uploadKantongAdmin(){
     document.getElementById("inputKategoriAdmin").value="";
 }
 
-// Upload Excel
-function uploadExcelAdmin(){
-    var fileInput = document.getElementById("fileExcelAdmin");
-    var file = fileInput.files[0];
-    if(!file){ 
-        alert("Pilih file dulu!"); 
-        return; 
+function ambilStatus(item){
+
+    var mode = sessionStorage.getItem("mode");
+
+    // Jika data lama (boolean true)
+    if(typeof item !== "object" || item === null){
+        return "OK KANTONG DI TERIMA";
     }
 
-    var judul = prompt("Masukkan Judul Data (contoh: SPX_15MEI):");
-    if(!judul){
-        alert("Judul harus diisi!");
-        return;
+    // Jika mode Win2
+    if(mode === "readonly"){
+        return (item.status_win2 && item.status_win2 !== "")
+            ? item.status_win2
+            : "-";
     }
 
-    judul = judul.toUpperCase();
-
-    var reader = new FileReader();
-
-    reader.onload = function(e){
-        var data = new Uint8Array(e.target.result);
-        var workbook = XLSX.read(data,{type:'array'});
-        var sheet = workbook.Sheets[workbook.SheetNames[0]];
-        var rows = XLSX.utils.sheet_to_json(sheet,{header:1});
-        var count=0;
-
-        rows.forEach(r=>{
-            r.forEach(c=>{
-                if(c!==undefined && c!==null && String(c).trim()!==""){
-                    db.child(judul)
-                      .child(String(c).trim())
-                      .set(true);
-                    count++;
-                }
-            });
-        });
-
-        alert("🔥 Berhasil upload "+count+" data dengan judul "+judul);
-        fileInput.value="";
-    };
-
-    reader.readAsArrayBuffer(file);
+    // Mode normal
+    return (item.status && item.status !== "")
+        ? item.status
+        : "OK KANTONG DI TERIMA";
 }
 
 // ===== PETUGAS FUNCTIONS =====
 function manualCheckPetugas(){
+
     var kode = document.getElementById("manualScanPetugas").value.trim();
     var judulDipilih = document.getElementById("filterKantong").value;
 
@@ -579,89 +774,229 @@ function manualCheckPetugas(){
         return;
     }
 
-    if(judulDipilih === "all"){
-        alert("Pilih judul dulu sebelum proses!");
-        return;
+   var mode = sessionStorage.getItem("mode");
+
+// Jika Win2 dan masih ALL → cari ke semua judul
+if(judulDipilih === "all" && mode === "readonly"){
+
+    db.once("value", snap=>{
+        var data = snap.val();
+        var ditemukan = false;
+
+        if(data){
+            for(var judul in data){
+                if(data[judul] && data[judul][String(kode).trim()]){
+    ditemukan = true;
+
+    var item = data[judul][String(kode).trim()];
+    var mode = sessionStorage.getItem("mode");
+    var statusText;
+
+    if(mode === "readonly"){
+        statusText = item.status_win2 ? item.status_win2 : "-";
+    } else {
+        statusText = item.status ? item.status : "OK KANTONG DI TERIMA";
     }
 
-    db.child(judulDipilih).once("value", snap=>{
-        var data = snap.val();
+    tampilkanStatusScan(kode, statusText);
+    beepSuccess.play();
+    return;
+}
+            }
+        }
 
-        if(data && data[kode]){
-            db.child(judulDipilih).child(kode).remove();
-            bersihkanJudulKosong();
-            beepSuccess.play();
-            document.getElementById("status").innerHTML="<span class='success'>✅ OK KANTONG SUDAH DI TERIMA</span>";
-        } else {
+        if(!ditemukan){
             beepError.play();
             shakeScreen();
-            document.getElementById("status").innerHTML="<span class='error'>❌ KANTONG TIDAK TERDAFTAR</span>";
+            tampilkanStatusScan(kode, "TIDAK ADA");
+        }
+    });
+
+    document.getElementById("manualScanPetugas").value="";
+    return;
+}
+
+// Selain Win2 tetap wajib pilih judul
+if(judulDipilih === "all"){
+    alert("Pilih judul dulu sebelum proses!");
+    return;
+}
+
+   db.child(judulDipilih).child(kode).once("value", snap=>{
+
+    var item = snap.val();
+
+    if(item){
+
+        var statusText = ambilStatus(item);
+        var mode = sessionStorage.getItem("mode");
+
+        if(mode !== "readonly"){
+            db.child(judulDipilih).child(kode).remove();
+        }
+
+        tampilkanStatusScan(kode, statusText);
+        beepSuccess.play();
+
+        } else {
+
+            beepError.play();
+            shakeScreen();
+            tampilkanStatusScan(kode, "TIDAK ADA");
         }
     });
 
     document.getElementById("manualScanPetugas").value="";
 }
+
 // ===== SCAN QR =====
 function onScanSuccess(decodedText){
+ decodedText = String(decodedText).trim();
 
     var judulDipilih = document.getElementById("filterKantong").value;
 
-    if(judulDipilih === "all"){
-        alert("Pilih judul dulu sebelum scan!");
-        return;
+    var mode = sessionStorage.getItem("mode");
+
+// Jika Win2 dan masih ALL → cari ke semua judul
+if(judulDipilih === "all" && mode === "readonly"){
+
+    db.once("value", snap=>{
+        var data = snap.val();
+        var ditemukan = false;
+
+        if(data){
+            for(var judul in data){
+                if(data[judul] && data[judul][String(decodedText).trim()]){
+    ditemukan = true;
+
+    var item = data[judul][decodedText];
+    var mode = sessionStorage.getItem("mode");
+    var statusText;
+
+    if(mode === "readonly"){
+        statusText = item.status_win2 ? item.status_win2 : "-";
+    } else {
+        statusText = item.status ? item.status : "OK KANTONG DI TERIMA";
     }
 
-    db.child(judulDipilih).once("value", snap=>{
-        var data = snap.val();
+    tampilkanStatusScan(decodedText, statusText);
+    beepSuccess.play();
+    return;
+}
+            }
+        }
 
-        if(data && data[decodedText]){
-            db.child(judulDipilih).child(decodedText).remove();
-            bersihkanJudulKosong();
-            beepSuccess.play();
-            document.getElementById("status").innerHTML="<span class='success'>✅ OK KANTONG SUDAH DI TERIMA</span>";
-        } else {
+        if(!ditemukan){
             beepError.play();
             shakeScreen();
-            document.getElementById("status").innerHTML="<span class='error'>❌ KANTONG TIDAK TERDAFTAR</span>";
+            tampilkanStatusScan(decodedText, "TIDAK ADA");
+        }
+    });
+
+    return;
+}
+
+// Selain Win2 tetap wajib pilih judul
+if(judulDipilih === "all"){
+    alert("Pilih judul dulu sebelum scan!");
+    return;
+}
+
+   db.child(judulDipilih).child(String(decodedText).trim()).once("value", snap=>{
+
+    var item = snap.val();
+
+    if(item){
+
+        var statusText = ambilStatus(item);
+        var mode = sessionStorage.getItem("mode");
+
+        if(mode !== "readonly"){
+            db.child(judulDipilih).child(decodedText).remove();
+        }
+
+        tampilkanStatusScan(decodedText, statusText);
+        beepSuccess.play();
+}   else {
+
+
+            beepError.play();
+            shakeScreen();
+            tampilkanStatusScan(decodedText, "TIDAK ADA");
         }
     });
 }
 
-var html5QrcodeScanner = new Html5QrcodeScanner("reader",{fps:10,qrbox:250});
+var html5QrcodeScanner = new Html5QrcodeScanner("reader",{fps:15,qrbox:300});
 html5QrcodeScanner.render(onScanSuccess);
 
 // ===== FILTER LIST & REALTIME =====
 function filterList(){
+
     var filter = document.getElementById("filterKantong").value;
     var list = document.getElementById("listKantong");
-    list.innerHTML="";
-    var total=0;
 
-    db.on("value", snap=>{
-        var data = snap.val();
-        list.innerHTML="";
-        total=0;
+    if(window.currentRef){
+        window.currentRef.off();
+    }
 
-        if(data){
-            if(filter==="all"){
-                for(var judul in data){
-                    for(var kode in data[judul]){
-                        list.innerHTML+="<tr><td>"+kode+"</td><td>"+judul+"</td></tr>";
-                        total++;
-                    }
-                }
-            }else{
-                if(data[filter]){
-                    for(var kode in data[filter]){
-                        list.innerHTML+="<tr><td>"+kode+"</td><td>"+filter+"</td></tr>";
-                        total++;
-                    }
-                }
-            }
+    list.innerHTML = "";
+    document.getElementById("totalData").innerText = "0";
+
+    var ref = (filter === "all") ? db : db.child(filter);
+    window.currentRef = ref;
+
+    // ===== HITUNG TOTAL AWAL =====
+    ref.once("value", function(snapshot){
+
+        var total = 0;
+
+        if(filter === "all"){
+            snapshot.forEach(function(judulSnap){
+                judulSnap.forEach(function(child){
+                    total++;
+                });
+            });
+        } else {
+            snapshot.forEach(function(child){
+                total++;
+            });
         }
 
         document.getElementById("totalData").innerText = total;
-        loadDropdownJudul(data);
+    });
+
+    // ===== REALTIME LIST =====
+    ref.on("child_added", function(snap){
+
+        if(filter === "all"){
+
+            var judul = snap.key;
+
+            snap.forEach(child=>{
+                var kode = child.key;
+
+                var row = document.createElement("tr");
+                row.innerHTML = "<td>"+kode+"</td><td>"+judul+"</td>";
+                list.appendChild(row);
+            });
+
+        } else {
+
+            var kode = snap.key;
+
+            var row = document.createElement("tr");
+            row.innerHTML = "<td>"+kode+"</td><td>"+filter+"</td>";
+            list.appendChild(row);
+        }
+    });
+
+    ref.on("child_removed", function(){
+        filterList();
+    });
+
+    db.once("value", function(snap){
+        loadDropdownJudul(snap.val());
     });
 }
 
@@ -675,17 +1010,27 @@ function hapusSemuaData(){
 
 // ===== CEK SESSION SAAT RELOAD =====
 window.onload=function(){
+
     var role=sessionStorage.getItem("role");
-    if(role) tampilkanHalaman(role);
-	filterList();
+
+    // Jika belum login → tampilkan tombol keluar
+    if(!role){
+        document.getElementById("tombolKeluar").style.display = "block";
+    }
+
+    if(role){
+        tampilkanHalaman(role);
+    }
 };
 
 // ===== ENTER UNTUK LOGIN & PROSES =====
 document.addEventListener("keydown", function(event){
+
     if(event.key === "Enter"){
+
         var role = sessionStorage.getItem("role");
 
-        // Jika BELUM login
+        // BELUM LOGIN
         if(!role){
             if(document.getElementById("tab-admin").style.display === "block"){
                 loginAdmin();
@@ -697,8 +1042,11 @@ document.addEventListener("keydown", function(event){
                 loginUser();
             }
         }
-        // Jika sudah login sebagai petugas (manual proses)
-        else if(role === "Petugas"){
+
+        // SUDAH LOGIN PETUGAS & FOKUS DI INPUT
+        else if(role === "petugas" && 
+                document.activeElement.id === "manualScanPetugas"){
+
             manualCheckPetugas();
         }
     }
@@ -776,13 +1124,141 @@ function hapusPerJudul(){
 }
 
 function shakeScreen(){
-    document.body.classList.add("shake");
+    document.body.classList.add("mega-shake-red");
 
     setTimeout(function(){
-        document.body.classList.remove("shake");
-    }, 400);
+        document.body.classList.remove("mega-shake-red");
+    }, 900);
 }
+
+function keluarAplikasi(){
+    document.body.style.opacity = "0";
+    document.body.style.transition = "0.5s";
+
+    setTimeout(function(){
+        window.location.href = "https://di2tboit81.github.io/POSIND/";
+    }, 500);
+}
+
+// ===== VERSI BARU UPLOAD EXCEL DENGAN KETERANGAN =====
+function uploadExcelAdmin(){
+
+    var fileInput = document.getElementById("fileExcelAdmin");
+    var file = fileInput.files[0];
+    if(!file){ 
+        alert("Pilih file dulu!"); 
+        return; 
+    }
+
+    var judul = prompt("Masukkan Judul Data (contoh: SPX_15MEI):");
+    if(!judul){
+        alert("Judul harus diisi!");
+        return;
+    }
+
+    judul = judul.toUpperCase();
+
+    var reader = new FileReader();
+
+    reader.onload = function(e){
+        var data = new Uint8Array(e.target.result);
+        var workbook = XLSX.read(data,{type:'array'});
+        var sheet = workbook.Sheets[workbook.SheetNames[0]];
+        var rows = XLSX.utils.sheet_to_json(sheet,{header:1});
+        var count=0;
+
+        rows.forEach((r, index)=>{
+
+    if(index < 1) return; // 🔥 skip 2 baris pertama
+
+    var kode = r[0];
+    var keterangan = r[1];
+    var keteranganWin2 = r[2]; // 🔥 ambil kolom ke 3
+
+    if(kode){
+        db.child(judul)
+  .child(String(kode).trim())
+  .remove()
+  .then(function(){
+      db.child(judul)
+        .child(String(kode).trim())
+        .set({
+    status: keterangan 
+            ? String(keterangan).trim().toUpperCase() 
+            : "OK KANTONG DI TERIMA",
+
+    status_win2: keteranganWin2 
+            ? String(keteranganWin2).trim().toUpperCase() 
+            : "-"
+});
+});
+        count++;
+    }
+});
+        alert("🔥 Berhasil upload "+count+" data dengan judul "+judul);
+        fileInput.value="";
+    };
+
+    reader.readAsArrayBuffer(file);
+}
+
+function tampilkanStatusScan(kode, statusText){
+
+var mode = sessionStorage.getItem("mode");
+var isWin2 = (mode === "readonly");
+
+    var htmlOutput = "<div style='margin-top:15px;'>";
+
+    htmlOutput += "<div style='font-weight:900;font-size:" + 
+              (isWin2 ? "35px" : "18px") + 
+              ";margin-bottom:15px;'>"  
+                  + kode + "</div>";
+
+    if(statusText === "OK KANTONG DI TERIMA"){
+        htmlOutput += 
+        "<span class='success'>✅ OK KANTONG SUDAH DI TERIMA</span>";
+    }
+    else if(statusText === "ERROR KANTONG DI TOLAK BEA CUKAI"){
+
+        htmlOutput +=
+        "<span id='beaCukaiWarning' style='background:linear-gradient(45deg,#ff7a00,#ff9500);color:#fff;padding:15px;border-radius:20px;font-weight:800;font-size:18px;box-shadow:0 0 20px #ff7a00;'>⚠️ KANTONG DI TOLAK BEA CUKAI</span>";
+
+        beepBeaCukai.play();
+        document.body.classList.add("brutal-shake");
+        document.body.classList.add("flash-orange");
+
+        setTimeout(function(){
+            document.getElementById("beaCukaiWarning").classList.add("glitch-orange");
+        }, 50);
+
+        setTimeout(function(){
+            document.body.classList.remove("brutal-shake");
+            document.body.classList.remove("flash-orange");
+            document.getElementById("beaCukaiWarning").classList.remove("glitch-orange");
+        }, 1500);
+    }
+    else{
+
+    if(statusText === "TIDAK ADA"){
+        htmlOutput += 
+        "<span class='error'>❌ KANTONG TIDAK TERDAFTAR</span>";
+    }
+    else{
+        htmlOutput += 
+        "<span class='success'>ℹ️ " + statusText + "</span>";
+    }
+}
+
+    htmlOutput += "</div>";
+
+    document.getElementById("status").innerHTML = htmlOutput;
+}
+
+
 
 </script>
 </body>
 </html>
+
+
+

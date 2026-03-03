@@ -902,7 +902,9 @@ if(judulDipilih === "all"){
     return;
 }
 
-   db.child(judulDipilih).child(String(decodedText).trim()).once("value", snap=>{
+   var kodeScan = String(decodedText).trim();
+
+db.child(judulDipilih).child(kodeScan).once("value", snap=>{
 
     var item = snap.val();
 
@@ -912,7 +914,7 @@ if(judulDipilih === "all"){
         var mode = sessionStorage.getItem("mode");
 
         if(mode !== "readonly"){
-            db.child(judulDipilih).child(decodedText).remove();
+            db.child(judulDipilih).child(kodeScan).remove();
         }
 
         tampilkanStatusScan(decodedText, statusText);

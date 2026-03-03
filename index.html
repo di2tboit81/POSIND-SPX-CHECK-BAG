@@ -929,7 +929,7 @@ db.child(judulDipilih).child(kodeScan).once("value", snap=>{
     });
 }
 
-var html5QrcodeScanner = new Html5QrcodeScanner("reader",{fps:15,qrbox:300});
+var html5QrcodeScanner = new Html5QrcodeScanner("reader",{fps:10,qrbox:250});
 html5QrcodeScanner.render(onScanSuccess);
 
 // ===== FILTER LIST & REALTIME =====
@@ -1261,6 +1261,7 @@ var isWin2 = (mode === "readonly");
 </script>
 </body>
 </html>
+
 
 
 

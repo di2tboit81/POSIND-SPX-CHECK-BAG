@@ -445,6 +445,90 @@ h3:nth-of-type(4)
     0 0 90px rgba(255,0,0,0.7);
 }
 
+/* ===== TOTAL KANTONG PENGAJUAN LEBIH KEREN ===== */
+
+#infoJudulBox h3{
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ff9500;
+    text-shadow: 
+        0 0 10px #ff7a00,
+        0 0 25px rgba(255,122,0,0.8),
+        0 0 40px rgba(255,122,0,0.6);
+    margin-bottom: 15px;
+}
+
+#infoJudulText{
+    font-size: 35px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    padding: 20px;
+    border-radius: 20px;
+    background: linear-gradient(45deg,#142850,#1f4068);
+    color: #ffffff;
+    box-shadow:
+        0 0 15px rgba(255,122,0,0.6),
+        0 0 30px rgba(255,149,0,0.6);
+    border: 2px solid #ff7a00;
+}
+
+/* ========================================= */
+/* ===== UPGRADE SUPER PREMIUM INFO ======= */
+/* ========================================= */
+
+#infoJudulText{
+    font-size: 85px !important;
+    font-weight: 900 !important;
+    letter-spacing: 3px;
+    line-height: 1.1;
+    text-transform: uppercase;
+    text-align: center;
+
+    padding: 22px !important;
+    border-radius: 16px;
+
+    background: linear-gradient(145deg,#0a192f,#112240,#0f3460);
+    color: #00E5FF;   /* 🔥 Biru neon bersih */
+
+    border: 2px solid #00E5FF;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.5),
+        0 0 15px rgba(0,229,255,0.6),
+        0 0 35px rgba(0,229,255,0.5);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Label kecil di atas isi */
+#infoJudulText::before{
+    content: "";
+    display: block;
+    font-size: 14px;
+    letter-spacing: 3px;
+    font-weight: 200;
+    margin-bottom: 12px;
+    color: #ff9500;
+}
+
+/* Animasi glow hidup */
+@keyframes pulseInfo{
+    0%{
+        box-shadow:
+            0 0 15px rgba(255,122,0,0.5),
+            0 0 35px rgba(255,149,0,0.5);
+    }
+    100%{
+        box-shadow:
+            0 0 35px rgba(255,122,0,0.9),
+            0 0 70px rgba(255,149,0,0.8);
+    }
+}
+
 </style>
 </head>
 <body>
@@ -531,9 +615,25 @@ h3:nth-of-type(4)
     </div>
 </div>
 
+<!-- FORM KETERANGAN JUDUL -->
+<div id="infoJudulBox" style="display:none;">
+    <h3>TOTAL KANTONG PENGAJUAN</h3>
+    <div id="infoJudulText" 
+         style="
+            font-weight:600;
+            font-size:16px;
+            padding:15px;
+            border-radius:15px;
+            background:rgba(0,0,0,0.4);
+            box-shadow:0 0 15px rgba(255,122,0,0.5);
+         ">
+        -
+    </div>
+</div>
+
 <!-- TOTAL & LIST -->
 <div id="sectionTotal">
-    <p style="font-size:40px; font-weight:bold;">Total Kantong:<br>
+    <p style="font-size:40px; font-weight:bold;">SISA KANTONG:<br>
     <span id="totalData">0</span></p></div>
 	<p id="status"></p>
 </div>
@@ -557,6 +657,7 @@ h3:nth-of-type(4)
 
 </table>
 
+
 <script>
 // ===== FIREBASE =====
 var firebaseConfig = {
@@ -569,8 +670,8 @@ var firebaseConfig = {
     appId: "1:231875242890:web:74348902968a45839ab673"
 };
 
-var scanLock = false;	
-	
+var scanLock = false; // 🔒 kunci scan
+
 var beepSuccess = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
 var beepError = new Audio("https://actions.google.com/sounds/v1/alarms/winding_alarm_clock.ogg");
 var beepBeaCukai = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
@@ -601,7 +702,7 @@ function loginAdmin(){
     var user = document.getElementById("usernameAdmin").value.trim();
     var pass = document.getElementById("passwordAdmin").value.trim();
     if(user==="Admin" && pass==="Di2tboit"){
-        sessionStorage.setItem("role","Admin");
+        sessionStorage.setItem("role","admin");
         tampilkanHalaman("admin");
     } else alert("Username/Password Admin salah!");
 }
@@ -766,15 +867,12 @@ function ambilStatus(item){
 
 // ===== PETUGAS FUNCTIONS =====
 function manualCheckPetugas(){
-
     var kode = document.getElementById("manualScanPetugas").value.trim();
     var judulDipilih = document.getElementById("filterKantong").value;
-
     if(!kode){
         alert("ISI NO KANTONG DULU !!!!");
         return;
     }
-
    var mode = sessionStorage.getItem("mode");
 
 // Jika Win2 dan masih ALL → cari ke semua judul
@@ -829,15 +927,19 @@ if(judulDipilih === "all"){
 
     if(item){
 
-        var statusText = ambilStatus(item);
-        var mode = sessionStorage.getItem("mode");
+    var statusText = ambilStatus(item);
+    var mode = sessionStorage.getItem("mode");
 
-        if(mode !== "readonly"){
-            db.child(judulDipilih).child(kode).remove();
-        }
+    if(
+    mode !== "readonly" ||
+    (mode === "readonly" && judulDipilih !== "all")
+){
+    db.child(judulDipilih).child(kode).remove();
+}
+    
 
-        tampilkanStatusScan(kode, statusText);
-        beepSuccess.play();
+    tampilkanStatusScan(kode, statusText);
+    beepSuccess.play();
 
         } else {
 
@@ -850,21 +952,21 @@ if(judulDipilih === "all"){
     document.getElementById("manualScanPetugas").value="";
 }
 
+
+
 // ===== SCAN QR =====
 function onScanSuccess(decodedText){
-	if(scanLock) return;   // ⛔ jika masih jeda, abaikan scan
-    scanLock = true;       // 🔒 kunci scan
+
+  if(scanLock) return; // 🔒 kalau masih jeda, abaikan
+    scanLock = true;     // 🔒 aktifkan kunci
 
     setTimeout(function(){
-        scanLock = false;  // 🔓 buka lagi setelah 2 detik
-    }, 2000); // ⏳ 2000 = 2 detik (bisa ubah jadi 3000 kalau mau 3 detik)
-
- decodedText = String(decodedText).trim();
-
+        scanLock = false; // 🔓 buka lagi setelah 2 detik
+    }, 3000); // ⏳ jeda 2 detik (bisa ubah)
+    
     var judulDipilih = document.getElementById("filterKantong").value;
-
     var mode = sessionStorage.getItem("mode");
-
+	
 // Jika Win2 dan masih ALL → cari ke semua judul
 if(judulDipilih === "all" && mode === "readonly"){
 
@@ -875,22 +977,16 @@ if(judulDipilih === "all" && mode === "readonly"){
         if(data){
             for(var judul in data){
                 if(data[judul] && data[judul][String(decodedText).trim()]){
-    ditemukan = true;
+                    ditemukan = true;
 
-    var item = data[judul][decodedText];
-    var mode = sessionStorage.getItem("mode");
-    var statusText;
+                    var item = data[judul][decodedText];
+                    var statusText = item.status_win2 ? item.status_win2 : "-";
 
-    if(mode === "readonly"){
-        statusText = item.status_win2 ? item.status_win2 : "-";
-    } else {
-        statusText = item.status ? item.status : "OK KANTONG DI TERIMA";
-    }
-
-    tampilkanStatusScan(decodedText, statusText);
-    beepSuccess.play();
-    return;
-}
+                    // ✅ HANYA TAMPILKAN (TIDAK KURANG TOTAL)
+                    tampilkanStatusScan(decodedText, statusText);
+                    beepSuccess.play();
+                    return;
+                }
             }
         }
 
@@ -910,23 +1006,25 @@ if(judulDipilih === "all"){
     return;
 }
 
-   var kodeScan = String(decodedText).trim();
-
-db.child(judulDipilih).child(kodeScan).once("value", snap=>{
+    db.child(judulDipilih).child(decodedText).once("value", snap=>{
 
     var item = snap.val();
 
-    if(item){
+   if(item){
 
-        var statusText = ambilStatus(item);
-        var mode = sessionStorage.getItem("mode");
+    var statusText = ambilStatus(item);
+    var mode = sessionStorage.getItem("mode");
 
-        if(mode !== "readonly"){
-            db.child(judulDipilih).child(kodeScan).remove();
-        }
+    if(
+    mode !== "readonly" ||
+    (mode === "readonly" && judulDipilih !== "all")
+){
+    db.child(judulDipilih).child(decodedText).remove();
+}
+    
 
-        tampilkanStatusScan(decodedText, statusText);
-        beepSuccess.play();
+    tampilkanStatusScan(decodedText, statusText);
+    beepSuccess.play();
 }   else {
 
 
@@ -937,13 +1035,39 @@ db.child(judulDipilih).child(kodeScan).once("value", snap=>{
     });
 }
 
-var html5QrcodeScanner = new Html5QrcodeScanner("reader",{fps:10,qrbox:250});
+var html5QrcodeScanner = new Html5QrcodeScanner("reader",{fps:15,qrbox:300});
 html5QrcodeScanner.render(onScanSuccess);
+
+
 
 // ===== FILTER LIST & REALTIME =====
 function filterList(){
-
     var filter = document.getElementById("filterKantong").value;
+	var mode = sessionStorage.getItem("mode");
+    var filter = document.getElementById("filterKantong").value;
+
+// 🔥 KHUSUS WIN2
+// ===== KHUSUS PETUGAS =====
+if(mode === "readonly"){ 
+    // 🔵 WIN2 (tetap seperti sebelumnya)
+    if(filter === "all"){
+        document.querySelector("table").style.display = "none";
+        document.querySelectorAll("h3")[4].style.display = "none";
+    } else {
+        document.querySelector("table").style.display = "table";
+        document.querySelectorAll("h3")[4].style.display = "block";
+    }
+}
+else if(mode === "normal"){ 
+    // 🟢 WIN1
+    if(filter === "all"){
+        document.querySelector("table").style.display = "none";
+        document.querySelectorAll("h3")[4].style.display = "none";
+    } else {
+        document.querySelector("table").style.display = "table";
+        document.querySelectorAll("h3")[4].style.display = "block";
+    }
+}
     var list = document.getElementById("listKantong");
 
     if(window.currentRef){
@@ -1006,8 +1130,11 @@ function filterList(){
     });
 
     db.once("value", function(snap){
-        loadDropdownJudul(snap.val());
-    });
+    loadDropdownJudul(snap.val());
+});
+
+tampilkanInfoJudul(filter);
+	
 }
 
 // ===== HAPUS SEMUA DATA =====
@@ -1151,62 +1278,54 @@ function keluarAplikasi(){
 }
 
 // ===== VERSI BARU UPLOAD EXCEL DENGAN KETERANGAN =====
-function uploadExcelAdmin(){
-
+function uploadExcelAdmin() {
     var fileInput = document.getElementById("fileExcelAdmin");
     var file = fileInput.files[0];
-    if(!file){ 
+    
+    if (!file) { 
         alert("Pilih file dulu!"); 
         return; 
     }
 
     var judul = prompt("Masukkan Judul Data (contoh: SPX_15MEI):");
-    if(!judul){
+    if (!judul) {
         alert("Judul harus diisi!");
         return;
     }
-
     judul = judul.toUpperCase();
 
     var reader = new FileReader();
 
-    reader.onload = function(e){
+    reader.onload = function(e) {
         var data = new Uint8Array(e.target.result);
-        var workbook = XLSX.read(data,{type:'array'});
+        var workbook = XLSX.read(data, { type: 'array' });
         var sheet = workbook.Sheets[workbook.SheetNames[0]];
-        var rows = XLSX.utils.sheet_to_json(sheet,{header:1});
-        var count=0;
+        var rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+        var count = 0;
 
-        rows.forEach((r, index)=>{
+        rows.forEach((r, index) => {
+            if (index < 1) return; // skip baris header
 
-    if(index < 1) return; // 🔥 skip 2 baris pertama
+            var kode = r[0];
+            var keterangan = r[1] || "";
+            var keteranganWin2 = r[2] || "";
+            var infoJudul = r[3] || "";
 
-    var kode = r[0];
-    var keterangan = r[1];
-    var keteranganWin2 = r[2]; // 🔥 ambil kolom ke 3
+            if (!kode) return;
 
-    if(kode){
-        db.child(judul)
-  .child(String(kode).trim())
-  .remove()
-  .then(function(){
-      db.child(judul)
-        .child(String(kode).trim())
-        .set({
-    status: keterangan 
-            ? String(keterangan).trim().toUpperCase() 
-            : "OK KANTONG DI TERIMA",
+            // Menambahkan data ke Firebase
+            db.child(judul).child(kode).set({
+                status: keterangan,
+                status_win2: keteranganWin2,
+                infoJudul: infoJudul
+            });
 
-    status_win2: keteranganWin2 
-            ? String(keteranganWin2).trim().toUpperCase() 
-            : "-"
-});
-});
-        count++;
-    }
-});
-        alert("🔥 Berhasil upload "+count+" data dengan judul "+judul);
-        fileInput.value="";
+            count++;
+        });
+
+        alert(count + " data berhasil diupload ke judul " + judul);
+        fileInput.value = ""; // reset input file
+        filterList(); // update tabel & total
     };
 
     reader.readAsArrayBuffer(file);
@@ -1264,13 +1383,41 @@ var isWin2 = (mode === "readonly");
     document.getElementById("status").innerHTML = htmlOutput;
 }
 
+function tampilkanInfoJudul(judul){
+
+    var box = document.getElementById("infoJudulBox");
+    var text = document.getElementById("infoJudulText");
+
+    if(judul === "all"){
+        box.style.display = "none";
+        text.innerText = "-";
+        return;
+    }
+
+    db.child(judul).once("value", function(snapshot){
+
+        var data = snapshot.val();
+        var info = "-";
+
+        if(data){
+            for(var kode in data){
+                if(data[kode].infoJudul){
+                    info = data[kode].infoJudul;
+                    break; // cukup ambil 1 saja
+                }
+            }
+        }
+
+        text.innerText = info;
+        box.style.display = "block";
+    });
+}
+
 
 
 </script>
 </body>
 </html>
-
-
 
 
 

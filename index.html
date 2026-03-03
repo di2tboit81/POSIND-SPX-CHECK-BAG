@@ -557,7 +557,6 @@ h3:nth-of-type(4)
 
 </table>
 
-
 <script>
 // ===== FIREBASE =====
 var firebaseConfig = {
@@ -570,6 +569,8 @@ var firebaseConfig = {
     appId: "1:231875242890:web:74348902968a45839ab673"
 };
 
+var scanLock = false;	
+	
 var beepSuccess = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
 var beepError = new Audio("https://actions.google.com/sounds/v1/alarms/winding_alarm_clock.ogg");
 var beepBeaCukai = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
@@ -851,6 +852,13 @@ if(judulDipilih === "all"){
 
 // ===== SCAN QR =====
 function onScanSuccess(decodedText){
+	if(scanLock) return;   // ⛔ jika masih jeda, abaikan scan
+    scanLock = true;       // 🔒 kunci scan
+
+    setTimeout(function(){
+        scanLock = false;  // 🔓 buka lagi setelah 2 detik
+    }, 2000); // ⏳ 2000 = 2 detik (bisa ubah jadi 3000 kalau mau 3 detik)
+
  decodedText = String(decodedText).trim();
 
     var judulDipilih = document.getElementById("filterKantong").value;
@@ -1261,6 +1269,7 @@ var isWin2 = (mode === "readonly");
 </script>
 </body>
 </html>
+
 
 
 

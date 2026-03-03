@@ -851,6 +851,7 @@ if(judulDipilih === "all"){
 
 // ===== SCAN QR =====
 function onScanSuccess(decodedText){
+ decodedText = String(decodedText).trim();
 
     var judulDipilih = document.getElementById("filterKantong").value;
 
@@ -901,7 +902,7 @@ if(judulDipilih === "all"){
     return;
 }
 
-    db.child(judulDipilih).child(decodedText).once("value", snap=>{
+   db.child(judulDipilih).child(String(decodedText).trim()).once("value", snap=>{
 
     var item = snap.val();
 

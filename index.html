@@ -529,6 +529,37 @@ h3:nth-of-type(4)
     }
 }
 
+/* ===== ORANGE ERROR PREMIUM ===== */
+.orange-error{
+  background: rgba(255,140,0,0.15);
+  color: #ffae00;
+  padding:12px;
+  border-radius:15px;
+  width:100%;
+  margin:10px 0;
+  font-weight:600;
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 15px rgba(255,140,0,0.6),
+    0 0 35px rgba(255,140,0,0.7),
+    0 0 60px rgba(255,140,0,0.5);
+  border:1px solid rgba(255,140,0,0.6);
+  animation: orangePulse 0.8s infinite alternate;
+}
+
+@keyframes orangePulse{
+  0%{
+    box-shadow:
+      0 0 10px rgba(255,140,0,0.6),
+      0 0 25px rgba(255,140,0,0.6);
+  }
+  100%{
+    box-shadow:
+      0 0 25px rgba(255,140,0,1),
+      0 0 60px rgba(255,140,0,0.9);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1349,23 +1380,18 @@ var isWin2 = (mode === "readonly");
     }
     else if(statusText === "ERROR KANTONG DI TOLAK BEA CUKAI"){
 
-        htmlOutput +=
-        "<span id='beaCukaiWarning' style='background:linear-gradient(45deg,#ff7a00,#ff9500);color:#fff;padding:15px;border-radius:20px;font-weight:800;font-size:18px;box-shadow:0 0 20px #ff7a00;'>⚠️ KANTONG DI TOLAK BEA CUKAI</span>";
+    htmlOutput += 
+    "<span class='orange-error'>⚠️ ERROR KANTONG DI TOLAK BEA CUKAI</span>";
 
-        beepBeaCukai.play();
-        document.body.classList.add("brutal-shake");
-        document.body.classList.add("flash-orange");
+    beepBeaCukai.play();
 
-        setTimeout(function(){
-            document.getElementById("beaCukaiWarning").classList.add("glitch-orange");
-        }, 50);
+    // Shake lebih kuat
+    document.body.classList.add("mega-shake-red");
 
-        setTimeout(function(){
-            document.body.classList.remove("brutal-shake");
-            document.body.classList.remove("flash-orange");
-            document.getElementById("beaCukaiWarning").classList.remove("glitch-orange");
-        }, 1500);
-    }
+    setTimeout(function(){
+        document.body.classList.remove("mega-shake-red");
+    }, 5000);
+}
     else{
 
     if(statusText === "TIDAK ADA"){

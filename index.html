@@ -1362,10 +1362,24 @@ function uploadExcelAdmin() {
     reader.readAsArrayBuffer(file);
 }
 
+function normalizeStatus(text){
+    if(!text) return "";
+
+    return text
+        .toString()
+        .replace(/\s+/g," ")
+        .replace(/\n/g,"")
+        .replace(/\r/g,"")
+        .trim()
+        .toUpperCase();
+}
+
 function tampilkanStatusScan(kode, statusText){
 
-var mode = sessionStorage.getItem("mode");
-var isWin2 = (mode === "readonly");
+    var mode = sessionStorage.getItem("mode");
+    var isWin2 = (mode === "readonly");
+
+    var statusFix = normalizeStatus(statusText);
 
     var htmlOutput = "<div style='margin-top:15px;'>";
 
@@ -1374,40 +1388,51 @@ var isWin2 = (mode === "readonly");
               ";margin-bottom:15px;'>"  
                   + kode + "</div>";
 
-    if(statusText === "OK KANTONG DI TERIMA"){
+    if(statusFix === "OK KANTONG DI TERIMA"){
+
         htmlOutput += 
         "<span class='success'>✅ OK KANTONG SUDAH DI TERIMA</span>";
+
+        beepSuccess.play();
     }
-    else if(statusText === "ERROR KANTONG DI TOLAK BEA CUKAI"){
 
-    htmlOutput += 
-    "<span class='orange-error'>⚠️ ERROR KANTONG DI TOLAK BEA CUKAI</span>";
+    else if(statusFix.includes("TOLAK BEA CUKAI")){
 
-    beepBeaCukai.play();
+        htmlOutput += 
+        "<span class='orange-error'>⚠️ ERROR KANTONG DI TOLAK BEA CUKAI</span>";
 
-    // Shake lebih kuat
-    document.body.classList.add("mega-shake-red");
+        beepBeaCukai.play();
 
-    setTimeout(function(){
-        document.body.classList.remove("mega-shake-red");
-    }, 5000);
-}
-    else{
+        document.body.classList.add("mega-shake-red");
 
-    if(statusText === "TIDAK ADA"){
+        setTimeout(function(){
+            document.body.classList.remove("mega-shake-red");
+        }, 5000);
+    }
+
+    else if(statusFix === "TIDAK ADA"){
+
         htmlOutput += 
         "<span class='error'>❌ KANTONG TIDAK TERDAFTAR</span>";
+
+        beepError.play();
+        shakeScreen();
     }
+
     else{
+
         htmlOutput += 
         "<span class='success'>ℹ️ " + statusText + "</span>";
+
+        beepSuccess.play();
     }
-}
 
     htmlOutput += "</div>";
 
     document.getElementById("status").innerHTML = htmlOutput;
 }
+
+
 
 function tampilkanInfoJudul(judul){
 
@@ -1444,6 +1469,7 @@ function tampilkanInfoJudul(judul){
 </script>
 </body>
 </html>
+
 
 
 

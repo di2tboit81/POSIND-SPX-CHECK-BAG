@@ -560,6 +560,55 @@ h3:nth-of-type(4)
   }
 }
 
+@keyframes orangePulse{
+  0%{
+    box-shadow:
+      0 0 10px rgba(255,140,0,0.6),
+      0 0 25px rgba(255,140,0,0.6);
+  }
+  100%{
+    box-shadow:
+      0 0 25px rgba(255,140,0,1),
+      0 0 60px rgba(255,140,0,0.9);
+  }
+}
+
+/* TARUH DI SINI */
+
+.cyber-footer{
+    margin-top:40px;
+    text-align:center;
+    width:100%;
+    max-width:450px;
+    padding:10px;
+}
+
+.cyber-line{
+    width:200px;
+    height:2px;
+    margin:0 auto 10px auto;
+    background:linear-gradient(90deg, transparent, #ff7a00, transparent);
+    box-shadow:0 0 15px #ff7a00;
+}
+
+.cyber-text{
+    font-size:12px;
+    letter-spacing:2px;
+    color:#ffffff;
+    opacity:0.85;
+    line-height:1.7;
+}
+
+.creator-name{
+    color:#ff7a00;
+    font-weight:700;
+    text-shadow:
+        0 0 5px #ff7a00,
+        0 0 10px #ff9500,
+        0 0 20px #ff9500;
+}
+
+
 </style>
 </head>
 <body>
@@ -1463,12 +1512,23 @@ function tampilkanInfoJudul(judul){
         box.style.display = "block";
     });
 }
-
+/* TAMBAHKAN DI SINI */
+document.getElementById("tahunFooter").innerText = new Date().getFullYear();
 
 
 </script>
+<!-- FOOTER COPYRIGHT -->
+<div class="cyber-footer">
+    <div class="cyber-line"></div>
+    <div class="cyber-text">
+        © <span id="tahunFooter"></span> WIN KCU BATAM 29400
+        <br>
+        POWERED BY <span class="creator-name">Team Win 29400</span>
+    </div>
+</div>
 </body>
 </html>
+
 
 
 
